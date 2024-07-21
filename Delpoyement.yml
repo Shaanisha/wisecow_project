@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wisecow-deployment
+  labels:
+    app: wisecow
 spec:
   replicas: 3
   selector:
@@ -14,6 +16,6 @@ spec:
     spec:
       containers:
       - name: wisecow
-        image: <YOUR_DOCKER_IMAGE>
+        image: <image_name>
         ports:
         - containerPort: 4499

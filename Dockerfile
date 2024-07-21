@@ -1,22 +1,28 @@
-# Use an official lightweight base image
+# Use an official Ubuntu as the base image
 FROM ubuntu:latest
 
-# Install required packages
-#RUN apk add --no-cache bash netcat-openbsd cowsay fortune
+# Install dependencies and cowsay
 RUN apt-get update && \
-    apt-get install fortune-mod cowsay -y
+    apt-get -y install fortune cowsay 
+RUN apt-get install -y netcat-openbsd
+RUN cp -pr /usr/games/fortune /bin/fortune
+RUN cp -pr /usr/games/cowsay /bin/cowsay
+# Print a message using cowsay and fortune
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the application script into the container
-COPY wisecow.sh .
+# Copy the script into the container
+COPY wisecow.sh /app/wisecow.sh
 
 # Make the script executable
-RUN chmod +x wisecow.sh
+RUN chmod +x /app/wisecow.sh
 
-# Expose the port that the service will run on
+# Modify .bashrc to set cowsay as fortune
+
+
+# Expose the port that the server will run on
 EXPOSE 4499
 
-# Run the application
-CMD ["./wisecow.sh"]
+# Run the script
+CMD ["/app/wisecow.sh"]
